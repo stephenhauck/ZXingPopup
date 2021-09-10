@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.7.0" />
+    <PackageReference Include="ZXing.Net.Mobile.Forms" Version="3.1.0-beta2" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="1.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Xamarin.Essentials.Interfaces" />
+    <None Remove="ZXing.Net.Mobile.Forms" />
+    <None Remove="Microsoft.Toolkit.Mvvm" />
+    <None Remove="Refractored.MvvmHelpers" />
+    <None Remove="Xamarin.CommunityToolkit" />
+  </ItemGroup>
+</Project>
