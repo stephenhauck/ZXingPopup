@@ -2,8 +2,10 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using ZXingPopup.Views;
 
 namespace ZXingPopup.ViewModels
 {
@@ -34,8 +36,12 @@ namespace ZXingPopup.ViewModels
             try
             {
                 ScanningBarcode = true;
-                //var popup = new 
-                //object retcode = Shell.Current.Navigation.ShowPopupAsync();
+                var popup = new ScanBarcodePopupView();
+                object retcode = Shell.Current.Navigation.ShowPopupAsync(popup);
+                if(retcode != null)
+                {
+
+                }
             }
             catch (Exception exception)
             {

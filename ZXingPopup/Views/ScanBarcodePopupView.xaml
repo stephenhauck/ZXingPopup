@@ -3,9 +3,18 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
     x:Class="ZXingPopup.Views.ScanBarcodePopupView"
     Size="300, 300">
     <StackLayout>
+        <zxing:ZXingScannerView                                      
+                    IsScanning="{Binding IsScanning}" 
+                    IsAnalyzing="{Binding IsAnalyzing}"
+                    Result="{Binding Result, Mode=TwoWay}" 
+                    ScanResultCommand="{Binding ScanCommand}" />    
+         <zxing:ZXingDefaultOverlay               
+                x:Name="scannerOverlay"                                                       
+                BottomText="Place the red line over the barcode you'd like to scan." />            
 
     </StackLayout>
 </xct:Popup>
