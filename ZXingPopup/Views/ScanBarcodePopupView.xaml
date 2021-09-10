@@ -1,20 +1,42 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <xct:Popup
+    x:Class="ZXingPopup.Views.ScanBarcodePopupView"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    xmlns:behaviors="http://xamarin.com/schemas/2020/toolkit"
+    xmlns:viewmodels="clr-namespace:ZXingPopup.ViewModels"
+    xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
     xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
-    x:Class="ZXingPopup.Views.ScanBarcodePopupView"
-    Size="300, 300">
-    <StackLayout>
-        <zxing:ZXingScannerView                                      
-                    IsScanning="{Binding IsScanning}" 
-                    IsAnalyzing="{Binding IsAnalyzing}"
-                    Result="{Binding Result, Mode=TwoWay}" 
-                    ScanResultCommand="{Binding ScanCommand}" />    
-         <zxing:ZXingDefaultOverlay               
-                x:Name="scannerOverlay"                                                       
-                BottomText="Place the red line over the barcode you'd like to scan." />            
-
+    x:Name="Popup"
+    x:DataType="viewmodels:ScanBarcodePopupViewModel"
+    IsLightDismissEnabled="False"
+    Size="350, 500">
+    <StackLayout
+        Margin="10"
+        HorizontalOptions="FillAndExpand"
+        VerticalOptions="FillAndExpand">
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <zxing:ZXingScannerView
+                HorizontalOptions="FillAndExpand"
+                IsAnalyzing="{Binding IsAnalyzing}"
+                IsScanning="{Binding IsScanning}"
+                IsTorchOn="{Binding TorchOn}"
+                OnScanResult="ZXingScannerView_OnOnScanResult"
+                Result="{Binding Result, Mode=TwoWay}"
+                ScanResultCommand="{Binding ScanResultCommand}"
+                VerticalOptions="FillAndExpand" />
+            <zxing:ZXingDefaultOverlay
+                x:Name="scannerOverlay"
+                BottomText="Place the red line over the barcode you'd like to scan."
+                ShowFlashButton="True">
+                <zxing:ZXingDefaultOverlay.Behaviors>
+                    <behaviors:EventToCommandBehavior Command="{Binding Path=BindingContext.TorchButtonCommand, Source={x:Reference Popup}}" EventName="FlashButtonClicked" />
+                </zxing:ZXingDefaultOverlay.Behaviors>
+            </zxing:ZXingDefaultOverlay>
+        </Grid>
+        <Button
+            Margin="25"
+            Clicked="Button_OnClicked"
+            Text="Cancel Scan" />
     </StackLayout>
 </xct:Popup>

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Acr.UserDialogs;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using ZXing;
+using ZXing.Mobile;
 using ZXingPopup.Views;
 
 namespace ZXingPopup.ViewModels
@@ -31,16 +35,22 @@ namespace ZXingPopup.ViewModels
             ScanBarcodeCommand = new Command(async () => await ScanBarcode());
         }
 
+        /// <summary>
+        /// Show the barcode popup and wait for the result ..
+        /// </summary>
+        /// <returns></returns>
         private async Task ScanBarcode()
         {
             try
             {
+                if(ScanningBarcode) return;
                 ScanningBarcode = true;
                 var popup = new ScanBarcodePopupView();
-                object retcode = Shell.Current.Navigation.ShowPopupAsync(popup);
-                if(retcode != null)
+                object popupResult = await Shell.Current.Navigation.ShowPopupAsync(popup);
+                if(popupResult != null)
                 {
-
+                    Result scanResult = (Result)popupResult;
+                    UserDialogs.Instance.Alert($"The scanned value was {scanResult.Text} with a barcode symbology of {scanResult.BarcodeFormat}","Barcode result");
                 }
             }
             catch (Exception exception)

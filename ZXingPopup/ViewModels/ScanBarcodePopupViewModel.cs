@@ -1,31 +1,74 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using ZXing;
 using System.Windows.Input;
-using Xamarin.Forms;
+using MvvmHelpers.Commands;
+using Plugin.SimpleAudioPlayer;
+using Command = Xamarin.Forms.Command;
+using System.Threading.Tasks;
+
 namespace ZXingPopup.ViewModels
 {
     public class ScanBarcodePopupViewModel :  BaseViewModel
     {
-        public ICommand ScanCommand
+        private Result _result;
+        private bool _isAnalyzing;
+        private bool _isScanning;
+        private bool _torchOn;
+        private readonly ISimpleAudioPlayer _simpleAudioPlayer;
+
+       
+
+        public Result Result
         {
-            get
-            {
-                return new Command(() =>
-                {
-                    throw new NotImplementedException();
-                });
-            }
+            get => _result;
+            set => SetProperty(ref _result, value);
         }
 
-        public Result Result { get; set; }
+        public bool IsAnalyzing
+        {
+            get => _isAnalyzing;
+            set => SetProperty(ref _isAnalyzing, value);
+        }
+        public bool IsScanning
+        {
+            get => _isScanning;
+            set => SetProperty(ref _isScanning, value);
+        }
 
-        public bool IsAnalyzing { get; set; }
+        public bool TorchOn
+        {
+            get => _torchOn;
+            set => SetProperty(ref _torchOn, value);
+        }
 
-        public bool IsScanning { get; set; }
+
+        public ICommand TorchButtonCommand { get; }
+        public ICommand ScanResultCommand { get; }
+
 
         public ScanBarcodePopupViewModel()
         {
+            //Create the audio player and load the embedded sound resource
+            _simpleAudioPlayer = CrossSimpleAudioPlayer.Current;
+            var assembly = typeof(App).GetTypeInfo().Assembly;
+            Stream audioStream = assembly.GetManifestResourceStream("ZXingPopup.Sounds." + "scanbeep.mp3");
+            _simpleAudioPlayer.Load(audioStream);
+            TorchButtonCommand = new AsyncCommand(async () => TorchButton());
+            ScanResultCommand = new AsyncCommand(async () => ScanResult());
+        }
 
+        private async Task TorchButton()
+        {
+            TorchOn = !TorchOn;
+        }
+
+        private async Task ScanResult()
+        {
+            _simpleAudioPlayer.Play();
+            TorchOn = false;
+            IsScanning = false;
         }
     }
 }
