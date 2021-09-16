@@ -24,7 +24,6 @@ namespace ZXingPopup.Views
                 //Set some defaults ... 
                 ((ScanBarcodePopupViewModel)BindingContext).IsScanning = true;
                 ((ScanBarcodePopupViewModel)BindingContext).TorchOn = true;
-                //((ScanBarcodePopupViewModel)BindingContext).IsAnalyzing = true;
             }
             catch (Exception exception)
             {
