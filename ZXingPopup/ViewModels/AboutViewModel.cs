@@ -48,12 +48,7 @@ namespace ZXingPopup.ViewModels
                 var popup = new ScanBarcodePopupView();
                 popup.Dismissed += Popup_Dismissed;
                 App.Current.MainPage.Navigation.ShowPopup(popup);
-                //object popupResult = await Shell.Current.Navigation.ShowPopupAsync(popup);
-                //if(popupResult != null)
-                //{
-                //    Result scanResult = (Result)popupResult;
-                //    _ = UserDialogs.Instance.Alert($"The scanned value was {scanResult.Text} with a barcode symbology of {scanResult.BarcodeFormat}","Barcode result");
-                //}
+               
             }
             catch (Exception exception)
             {

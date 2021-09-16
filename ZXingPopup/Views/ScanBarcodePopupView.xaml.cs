@@ -42,7 +42,6 @@ namespace ZXingPopup.Views
                 ((ScanBarcodePopupViewModel)BindingContext).TorchOn = false;
                 ((ScanBarcodePopupViewModel)BindingContext).IsAnalyzing = false;
                 Debug.WriteLine($"Dismissing and passing back scan result {JsonConvert.SerializeObject(result)}");
-                //Dismiss(result);
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     Dismiss(result);
