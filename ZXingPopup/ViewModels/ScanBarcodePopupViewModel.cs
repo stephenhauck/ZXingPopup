@@ -57,6 +57,7 @@ namespace ZXingPopup.ViewModels
             _simpleAudioPlayer.Load(audioStream);
             TorchButtonCommand = new AsyncCommand(async () => TorchButton());
             ScanResultCommand = new AsyncCommand(async () => ScanResult());
+            IsAnalyzing = true;
         }
 
         private async Task TorchButton()
@@ -67,8 +68,6 @@ namespace ZXingPopup.ViewModels
         private async Task ScanResult()
         {
             _simpleAudioPlayer.Play();
-            TorchOn = false;
-            IsScanning = false;
         }
     }
 }

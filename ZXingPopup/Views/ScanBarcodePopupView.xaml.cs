@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Xamarin.CommunityToolkit.UI.Views;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing;
 using ZXingPopup.ViewModels;
@@ -16,24 +17,64 @@ namespace ZXingPopup.Views
     {
         public ScanBarcodePopupView()
         {
-            InitializeComponent();
-            BindingContext = new ScanBarcodePopupViewModel();
-            //Set some defaults ... 
-            ((ScanBarcodePopupViewModel)BindingContext).IsScanning = true;
-            ((ScanBarcodePopupViewModel)BindingContext).TorchOn = true;
+            try
+            {
+                InitializeComponent();
+                BindingContext = new ScanBarcodePopupViewModel();
+                //Set some defaults ... 
+                ((ScanBarcodePopupViewModel)BindingContext).IsScanning = true;
+                ((ScanBarcodePopupViewModel)BindingContext).TorchOn = true;
+                //((ScanBarcodePopupViewModel)BindingContext).IsAnalyzing = true;
+            }
+            catch (Exception exception)
+            {
+                if (Debugger.IsAttached) Debugger.Break();
+                Debug.WriteLine(exception.Message);
+            }
+           
         }
 
         private void ZXingScannerView_OnOnScanResult(Result result)
         {
-            Debug.WriteLine($"Dismissing and passing back scan result {JsonConvert.SerializeObject(result)}");
-            Dismiss(result);
+            try
+            {
+                ((ScanBarcodePopupViewModel)BindingContext).IsScanning = false;
+                ((ScanBarcodePopupViewModel)BindingContext).TorchOn = false;
+                ((ScanBarcodePopupViewModel)BindingContext).IsAnalyzing = false;
+                Debug.WriteLine($"Dismissing and passing back scan result {JsonConvert.SerializeObject(result)}");
+                //Dismiss(result);
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Dismiss(result);
+                });
+
+
+            }
+            catch (Exception exception)
+            {
+                if (Debugger.IsAttached) Debugger.Break();
+                Debug.WriteLine(exception.Message);
+            }
+           
         }
 
 
         private void Button_OnClicked(object sender, EventArgs e)
         {
-            Debug.WriteLine($"Dismissing and passing back null");
-           Dismiss(null);
+            try
+            {
+                ((ScanBarcodePopupViewModel)BindingContext).IsScanning = false;
+                ((ScanBarcodePopupViewModel)BindingContext).TorchOn = false;
+                ((ScanBarcodePopupViewModel)BindingContext).IsAnalyzing = false;
+                Debug.WriteLine($"Dismissing and passing back null");
+                Dismiss(null);
+            }
+            catch (Exception exception)
+            {
+                if (Debugger.IsAttached) Debugger.Break();
+                Debug.WriteLine(exception.Message);
+            }
+            
         }
     }
 }

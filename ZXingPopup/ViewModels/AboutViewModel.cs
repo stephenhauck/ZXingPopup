@@ -46,12 +46,14 @@ namespace ZXingPopup.ViewModels
                 if(ScanningBarcode) return;
                 ScanningBarcode = true;
                 var popup = new ScanBarcodePopupView();
-                object popupResult = await Shell.Current.Navigation.ShowPopupAsync(popup);
-                if(popupResult != null)
-                {
-                    Result scanResult = (Result)popupResult;
-                    UserDialogs.Instance.Alert($"The scanned value was {scanResult.Text} with a barcode symbology of {scanResult.BarcodeFormat}","Barcode result");
-                }
+                popup.Dismissed += Popup_Dismissed;
+                App.Current.MainPage.Navigation.ShowPopup(popup);
+                //object popupResult = await Shell.Current.Navigation.ShowPopupAsync(popup);
+                //if(popupResult != null)
+                //{
+                //    Result scanResult = (Result)popupResult;
+                //    _ = UserDialogs.Instance.Alert($"The scanned value was {scanResult.Text} with a barcode symbology of {scanResult.BarcodeFormat}","Barcode result");
+                //}
             }
             catch (Exception exception)
             {
@@ -60,6 +62,16 @@ namespace ZXingPopup.ViewModels
             finally
             {
                 ScanningBarcode = false;
+            }
+        }
+
+        private void Popup_Dismissed(object sender, Xamarin.CommunityToolkit.UI.Views.PopupDismissedEventArgs e)
+        {
+           
+            if (e.Result != null)
+            {
+                Result scanResult = (Result)e.Result;
+                _ = UserDialogs.Instance.Alert($"The scanned value was {scanResult.Text} with a barcode symbology of {scanResult.BarcodeFormat}", "Barcode result");
             }
         }
     }
